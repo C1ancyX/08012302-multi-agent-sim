@@ -7,7 +7,7 @@ env = MultiAgentEnv()
 states = env.reset()
 print("first:", states)
 
-# step：3 agents all go（v=1.0，角速度=0）
+# step：3 agents all go（v=1.0，theta=0）
 actions = [[1.0, 0.0], [1.0, 0.0], [1.0, 0.0]]
 next_states, rewards, done = env.step(actions)
 
