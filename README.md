@@ -6,20 +6,20 @@
 
 ---
 
-   安装
+安装
 
-    克隆仓库
+克隆仓库
 ```bash
 git clone https://github.com/C1ancyX/08012302-multi-agent-sim.git
 cd 08012302-multi-agent-sim
 ```
 
-    安装依赖
+安装依赖
 ```bash
 pip install -r requirements.txt
 ```
 
-    已知依赖
+已知依赖
 - Python (3.8+)
 - PyTorch (2.0.0)
 - numpy (1.24.0)
@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 ---
 
-   案例研究：多智能体编队控制环境
+案例研究：多智能体编队控制环境
 
 我们在此演示代码如何与自建的多智能体环境协同工作。环境包含：
 - 3个矩形智能体（长0.4m，宽0.2m），差分驱动运动学模型
@@ -37,26 +37,26 @@ pip install -r requirements.txt
 - 手动控制模式（键盘操作）
 - Pygame可视化窗口（1024×768，跟随领航者视角）
 
-    运行训练
+运行训练
 ```bash
 python main.py --num_episodes 500 --render
 ```
 
-    手动控制演示
+手动控制演示
 ```bash
 python demo_manual.py
 ```
 
-    测试环境接口
+测试环境接口
 ```bash
 python test_interface.py
 ```
 
 ---
 
-   命令行选项
+命令行选项
 
-    环境选项
+环境选项
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
 | `--num_agents` | 智能体数量 | 3 |
@@ -64,7 +64,7 @@ python test_interface.py
 | `--max_steps` | 每回合最大步数 | 300 |
 | `--obstacles` | 是否启用随机障碍物 | True |
 
-    训练参数
+训练参数
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
 | `--num_episodes` | 训练总回合数 | 5000 |
@@ -76,7 +76,7 @@ python test_interface.py
 | `--tau` | 软更新系数 | 0.01 |
 | `--noise_scale` | 动作探索噪声标准差 | 0.1 |
 
-    系统选项
+系统选项
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
 | `--render` | 启用Pygame可视化 | False |
@@ -85,7 +85,7 @@ python test_interface.py
 
 ---
 
-   代码结构
+代码结构
 
 ```
 08012302-multi-agent-sim/
@@ -108,7 +108,7 @@ python test_interface.py
 └── requirements.txt               Python依赖列表
 ```
 
-    核心文件说明
+核心文件说明
 
 -   `simulation/env.py`  ：定义多智能体环境，包括车辆运动学、碰撞检测、奖励函数、障碍物生成。提供`reset()`、`step()`、`get_state_dim()`等标准接口。
 -   `agents/network.py`  ：`Actor`和`Critic`网络结构。`Actor`输入局部观测(3维)，输出动作(2维)；`Critic`输入全局状态(9维)和所有动作(6维)，输出联合Q值。
@@ -117,24 +117,24 @@ python test_interface.py
 
 ---
 
-   检查点与恢复训练
+检查点与恢复训练
 
 训练过程中自动保存：
 - 每100回合保存模型到 `models/checkpoint_{episode}_actor_{i}.pth`
 - 经验池保存到 `buffers/replay_buffer_{episode}.pkl`
 - 最佳模型保存到 `models/best_actor_{i}.pth`
 
-    恢复训练
+恢复训练
 ```bash
 python main.py --resume --render
 ```
 
-    仅评估不训练
+仅评估不训练
 修改`main.py`中的`num_episodes=0`，或使用独立的评估脚本`evaluate.py`（需自行创建）。
 
 ---
 
-   可视化与手动控制
+可视化与手动控制
 
     实时训练可视化
 ```bash
@@ -160,7 +160,7 @@ python main.py --render --num_episodes 100
 
 ---
 
-   性能评估
+性能评估
 
 训练指标自动保存在`logs/training_metrics_*.json`，包含：
 - 每回合总奖励
@@ -174,23 +174,23 @@ python evaluation/plotter.py     需自行实现
 
 ---
 
-   常见问题
+常见问题
 
-  Q: 训练时车辆不动？    
+Q: 训练时车辆不动？    
 A: 检查`start_stop`标志是否为1（默认是1）。也可在`env.py`中打印`set_v`值确认动作被应用。
 
-  Q: 碰撞检测不准确？    
+Q: 碰撞检测不准确？    
 A: 确保`shapely`已正确安装。矩形车辆多边形计算正确性可通过调试`_get_vehicle_polygon`验证。
 
-  Q: 如何修改障碍物数量？    
+Q: 如何修改障碍物数量？    
 A: 在创建环境时传入`num_obstacles`参数，例如`MultiAgentEnv(num_obstacles=8)`。
 
-  Q: 训练不收敛（奖励始终为负）？    
+Q: 训练不收敛（奖励始终为负）？    
 A: 尝试增加`--num_episodes`，降低`--lr_actor`/`--lr_critic`（如1e-4），或调整`--noise_scale`（如0.2）。
 
 ---
 
-   引用
+引用
 
 如果本项目对您的研究有帮助，请引用原始MADDPG论文：
 
