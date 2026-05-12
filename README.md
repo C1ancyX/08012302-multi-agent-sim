@@ -1,8 +1,8 @@
 多智能体协同路径规划与控制
 ---
-
 本项目采用   A* 全局路径规划 + DWA 局部避障 + Leader-Follower 编队控制   的传统控制方案，实现三个差分驱动小车从起点至目标点的三角形编队保持与避障导航。完全基于 Python 和 NumPy，无需深度学习框架。
 
+---
 安装
 ```bash
 git clone https://github.com/C1ancyX/08012302-multi-agent-sim.git
@@ -14,12 +14,14 @@ pip install -r requirements.txt
 - numpy
 - pygame
 - shapely
+
 ---
  快速开始
 运行默认仿真（领航者导航 + 编队跟随）
 ```bash
 python main.py
 ```
+
 ---
 算法说明
 1. 全局路径规划（A*）
@@ -91,11 +93,10 @@ python main.py
 - 领航者自动向 (25,25) 移动，跟随者保持三角形编队。
 - 遇到障碍物时，DWA 引导绕行。
 - 控制台打印领航者速度，并生成性能指标 JSON。
-
-评估单个回合
-仿真结束后，`logs/` 目录下会生成 `episode_0_metrics.json`，包含全部性能指标。
+评估单个回合仿真结束后，`logs/` 目录下会生成 `episode_0_metrics.json`，包含全部性能指标。
 ---
 常见问题
+
 Q: 领航者为什么有时原地转圈？    
 A: 可能是 A* 路径的第一个点方向与车辆朝向偏差过大，增大目标增益即可。
 Q: 跟随者避障刮蹭障碍物    
@@ -104,7 +105,9 @@ Q: 编队保持不好（三角形变形）
 A: 提高 `LeaderFollower` 中的 `k_phi`（角度增益）和角速度限幅；确保 `_follower_control` 未被使用（应使用 `LeaderFollower.compute_control`）。
 Q: 性能指标中 `success` 为 false 但实际已到达    
 A: 确保 `env._get_info()` 返回了 `'goal_radius'` 字段。
+
 未来改进方向
+
 - 引入模型预测控制（MPC）替代 DWA，提高避障平滑性。
 - 为跟随者增加动态编队调整 （如通过障碍区时临时收缩队形）。
 - 支持任意数量智能体 （当前硬编码 3 个）。
