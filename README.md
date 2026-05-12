@@ -1,7 +1,8 @@
 多智能体协同路径规划与控制
 ---
+
 本项目采用   A* 全局路径规划 + DWA 局部避障 + Leader-Follower 编队控制   的传统控制方案，实现三个差分驱动小车从起点至目标点的三角形编队保持与避障导航。完全基于 Python 和 NumPy，无需深度学习框架。
----
+
 安装
 ```bash
 git clone https://github.com/C1ancyX/08012302-multi-agent-sim.git
